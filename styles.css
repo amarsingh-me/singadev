@@ -1,0 +1,337 @@
+/* ===== Theme tokens ===== */
+:root {
+  --accent: #3fd67a;
+  --accent-dim: #2a9c58;
+
+  --bg: #f4f4f5;
+  --terminal-bg: #ffffff;
+  --terminal-border: #d4d4d8;
+  --titlebar-bg: #e7e7ea;
+  --text: #1c1c1e;
+  --text-dim: #6b6b70;
+  --prompt: var(--accent-dim);
+  --link-hover-bg: rgba(63, 214, 122, 0.12);
+  --focus-ring: #1c1c1e;
+  --dot-red: #ff5f56;
+  --dot-yellow: #ffbd2e;
+  --dot-green: #27c93f;
+  --shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.25);
+}
+
+/*
+ * Dark is the default aesthetic. An inline script in <head> sets
+ * data-theme="light"|"dark" before first paint (from localStorage or
+ * prefers-color-scheme), so this selector normally matches explicitly.
+ * The bare :root fallback (no attribute yet, e.g. JS disabled) also
+ * resolves to dark, matching the terminal theme's primary look.
+ */
+:root:not([data-theme="light"]) {
+  --bg: #0c0e0f;
+  --terminal-bg: #111417;
+  --terminal-border: #23272b;
+  --titlebar-bg: #181c1f;
+  --text: #e5e9ea;
+  --text-dim: #838d91;
+  --prompt: var(--accent);
+  --link-hover-bg: rgba(63, 214, 122, 0.1);
+  --focus-ring: #3fd67a;
+  --shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.6);
+}
+
+/* ===== Reset & base ===== */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo,
+    Consolas, "Liberation Mono", monospace;
+  padding: 24px;
+  overflow-wrap: break-word;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+a {
+  color: inherit;
+}
+
+/* ===== Theme toggle ===== */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--terminal-border);
+  background: var(--titlebar-bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-dim);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.theme-toggle .icon-moon {
+  display: none;
+}
+
+:root:not([data-theme="light"]) .theme-toggle .icon-sun {
+  display: none;
+}
+
+:root:not([data-theme="light"]) .theme-toggle .icon-moon {
+  display: block;
+}
+
+/* ===== Terminal window ===== */
+.terminal {
+  width: 100%;
+  max-width: 560px;
+  min-width: 0;
+  border-radius: 12px;
+  border: 1px solid var(--terminal-border);
+  background: var(--terminal-bg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.terminal-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: var(--titlebar-bg);
+  border-bottom: 1px solid var(--terminal-border);
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-red {
+  background: var(--dot-red);
+}
+
+.dot-yellow {
+  background: var(--dot-yellow);
+}
+
+.dot-green {
+  background: var(--dot-green);
+}
+
+.terminal-titlebar-label {
+  margin: 0 auto;
+  font-size: 12px;
+  color: var(--text-dim);
+  transform: translateX(-16px);
+}
+
+.terminal-body {
+  padding: 32px 28px 36px;
+}
+
+/* ===== Header / wordmark ===== */
+.prompt-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 6px;
+  font-size: 15px;
+  color: var(--text-dim);
+}
+
+.prompt-line .prompt {
+  color: var(--prompt);
+  font-weight: 600;
+}
+
+.wordmark {
+  margin: 0 0 14px;
+  line-height: 0;
+}
+
+.logo-plate {
+  display: inline-block;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 10px 16px;
+}
+
+.wordmark img {
+  display: block;
+  height: auto;
+  width: 100%;
+  max-width: 260px;
+}
+
+.tagline {
+  margin: 0 0 28px;
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.tagline .cursor {
+  display: inline-block;
+  width: 8px;
+  margin-left: 2px;
+  background: var(--accent);
+  color: transparent;
+  animation: blink 1.1s step-end infinite;
+}
+
+.output-line {
+  margin: 0 0 20px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* ===== Contact list ===== */
+.contact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contact-list li {
+  display: flex;
+}
+
+.contact-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.contact-link:hover {
+  background: var(--link-hover-bg);
+  border-color: var(--terminal-border);
+  transform: translateX(2px);
+}
+
+.contact-link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.contact-link svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--prompt);
+}
+
+.contact-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.contact-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+.contact-value {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.contact-link .arrow {
+  margin-left: auto;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+/* ===== Footer ===== */
+.footer-line {
+  margin: 28px 0 0;
+  font-size: 12px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.footer-line .prompt {
+  color: var(--prompt);
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordmark .cursor {
+    animation: none;
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 420px) {
+  .terminal-body {
+    padding: 24px 18px 28px;
+  }
+
+  .wordmark img {
+    max-width: 220px;
+  }
+
+  .contact-label {
+    display: none;
+  }
+}
